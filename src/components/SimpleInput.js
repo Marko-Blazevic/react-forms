@@ -1,16 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const SimpleInput = (props) => {
   const [enteredName, setEnteredName] = useState('');
   const [inputWasTouched, setInputWasTouched] = useState(false);
 
   const checkEnteredName = enteredName.trim() !== '';
-
-  useEffect(() => {
-    if (checkEnteredName) {
-      console.log('from useEffect ');
-    }
-  }, [checkEnteredName]);
 
   const enteredNameHandler = (event) => {
     setInputWasTouched(true);
