@@ -7,7 +7,6 @@ const SimpleInput = (props) => {
   const checkEnteredName = enteredName.trim() !== '';
 
   const enteredNameHandler = (event) => {
-    setInputWasTouched(true);
     setEnteredName(event.target.value);
   };
 
@@ -26,9 +25,7 @@ const SimpleInput = (props) => {
   };
 
   const onBlurHandler = () => {
-    if (!checkEnteredName) {
-      setInputWasTouched(true);
-    }
+    setInputWasTouched(true);
   };
 
   const nameInputClasses =
