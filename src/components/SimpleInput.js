@@ -16,6 +16,15 @@ const SimpleInput = (props) => {
     setEnteredName(event.target.value);
   };
 
+  const onBlurHandler = () => {
+    setInputWasTouched(true);
+  };
+
+  const nameInputClasses =
+    !checkEnteredName && !inputWasTouched
+      ? 'form-control'
+      : 'form-control invalid';
+
   const onSubmitHandler = (event) => {
     event.preventDefault();
     setInputWasTouched(true);
@@ -29,15 +38,6 @@ const SimpleInput = (props) => {
     setEnteredName('');
     setInputWasTouched(false);
   };
-
-  const onBlurHandler = () => {
-    setInputWasTouched(true);
-  };
-
-  const nameInputClasses =
-    !checkEnteredName && !inputWasTouched
-      ? 'form-control'
-      : 'form-control invalid';
 
   return (
     <form onSubmit={onSubmitHandler}>
