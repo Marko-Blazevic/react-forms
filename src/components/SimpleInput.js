@@ -2,25 +2,32 @@ import { useState } from 'react';
 
 const SimpleInput = (props) => {
   const [enteredName, setEnteredName] = useState('');
+  const [enteredEmail, setEnteredEmail] = useState('');
   const [inputWasTouched, setInputWasTouched] = useState(false);
 
   const checkEnteredName = enteredName.trim() !== '';
+  const trimmedEmail = enteredEmail.trim();
+  const checkEnteredEmail =
+    trimmedEmail !== '' && trimmedEmail.indexOf('@') > -1;
 
   let formIsValid = false;
 
-  if (checkEnteredName) {
+  if (checkEnteredName && checkEnteredEmail) {
     formIsValid = true;
   }
 
   const enteredNameHandler = (event) => {
     setEnteredName(event.target.value);
   };
+  const enteredEmailHandler = (event) => {
+    setEnteredEmail(event.target.value);
+  };
 
   const onBlurHandler = () => {
     setInputWasTouched(true);
   };
 
-  const nameInputClasses =
+  const inputFieldClasses =
     !checkEnteredName && !inputWasTouched
       ? 'form-control'
       : 'form-control invalid';
@@ -30,18 +37,20 @@ const SimpleInput = (props) => {
     setInputWasTouched(true);
 
     console.log(enteredName);
+    console.log(enteredEmail);
 
     if (!checkEnteredName) {
       return;
     }
 
     setEnteredName('');
+    setEnteredEmail('');
     setInputWasTouched(false);
   };
 
   return (
     <form onSubmit={onSubmitHandler}>
-      <div className={nameInputClasses}>
+      <div className={inputFieldClasses}>
         <label htmlFor='name'>Your Name</label>
         <input
           type='text'
@@ -51,7 +60,20 @@ const SimpleInput = (props) => {
           onBlur={onBlurHandler}
         />
         {!checkEnteredName && inputWasTouched && (
-          <p className='error-text'>Name field must be entered.</p>
+          <p className='error-text'>Please enter a name.</p>
+        )}
+      </div>
+      <div className={inputFieldClasses}>
+        <label htmlFor='email'>Your email</label>
+        <input
+          type='email'
+          id='email'
+          value={enteredEmail}
+          onChange={enteredEmailHandler}
+          onBlur={onBlurHandler}
+        />
+        {!checkEnteredEmail && inputWasTouched && (
+          <p className='error-text'>Please enter an email.</p>
         )}
       </div>
       <div className='form-actions'>
