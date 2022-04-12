@@ -1,51 +1,34 @@
-import { useState } from 'react';
+import useInput from '../hooks/use-input';
 
 const SimpleInput = (props) => {
-  const [enteredName, setEnteredName] = useState('');
-  const [enteredEmail, setEnteredEmail] = useState('');
-  const [inputWasTouched, setInputWasTouched] = useState(false);
+  // const [enteredEmail, setEnteredEmail] = useState('');
 
-  const checkEnteredName = enteredName.trim() !== '';
-  const trimmedEmail = enteredEmail.trim();
-  const checkEnteredEmail =
-    trimmedEmail !== '' && trimmedEmail.indexOf('@') > -1;
+  const {
+    enteredValue: enteredName,
+    error,
+    isValid,
+    enteredValueHandler: enteredNameHandler,
+    blurHandler: onBlurHandler,
+    reset,
+  } = useInput((value) => {
+    return value.trim() !== '';
+  });
 
-  let formIsValid = false;
+  // const trimmedEmail = enteredEmail.trim();
+  // const checkEnteredEmail = trimmedEmail !== '' && trimmedEmail.includes('@');
 
-  if (checkEnteredName && checkEnteredEmail) {
-    formIsValid = true;
-  }
-
-  const enteredNameHandler = (event) => {
-    setEnteredName(event.target.value);
-  };
-  const enteredEmailHandler = (event) => {
-    setEnteredEmail(event.target.value);
-  };
-
-  const onBlurHandler = () => {
-    setInputWasTouched(true);
-  };
-
-  const inputFieldClasses =
-    !checkEnteredName && !inputWasTouched
-      ? 'form-control'
-      : 'form-control invalid';
+  const inputFieldClasses = isValid ? 'form-control' : 'form-control invalid';
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    setInputWasTouched(true);
 
     console.log(enteredName);
-    console.log(enteredEmail);
+    // console.log(enteredEmail);
 
-    if (!checkEnteredName) {
+    if (!isValid) {
       return;
     }
-
-    setEnteredName('');
-    setEnteredEmail('');
-    setInputWasTouched(false);
+    reset('');
   };
 
   return (
@@ -59,11 +42,9 @@ const SimpleInput = (props) => {
           onChange={enteredNameHandler}
           onBlur={onBlurHandler}
         />
-        {!checkEnteredName && inputWasTouched && (
-          <p className='error-text'>Please enter a name.</p>
-        )}
+        {!isValid && <p className='error-text'>Please enter a name.</p>}
       </div>
-      <div className={inputFieldClasses}>
+      {/* <div className={inputFieldClasses}>
         <label htmlFor='email'>Your email</label>
         <input
           type='email'
@@ -75,9 +56,9 @@ const SimpleInput = (props) => {
         {!checkEnteredEmail && inputWasTouched && (
           <p className='error-text'>Please enter an email.</p>
         )}
-      </div>
+      </div> */}
       <div className='form-actions'>
-        <button disabled={!formIsValid}>Submit</button>
+        <button disabled={!isValid}>Submit</button>
       </div>
     </form>
   );
